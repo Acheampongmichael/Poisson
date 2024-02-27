@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distribution Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+    }
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+    }
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Distribution Calculator</h1>
+    <label for="n">Number of Trials (n):</label>
+    <input type="number" id="n" min="0" required><br>
+    <label for="p">Probability of Success on a Trial (p):</label>
+    <input type="number" id="p" min="0" max="1" step="0.01" required><br>
+    <label for="x">Number of Successes (x):</label>
+    <input type="number" id="x" min="0" required><br>
+    <button onclick="calculateBinomial()">Calculate Binomial</button><br><br>
+    <label for="mu">Average Rate of Success (&#956;):</label>
+    <input type="number" id="mu" min="0" required><br>
+    <label for="poissonX">Poisson Random Variable (x):</label>
+    <input type="number" id="poissonX" min="0" required><br>
+    <button onclick="calculatePoisson()">Calculate Poisson</button><br><br>
+    <label for="n">Total number of items (n):</label>
+    <input type="number" id="nCombPerm" min="0" required><br>
+    <label for="r">Number of items to choose (r):</label>
+    <input type="number" id="rCombPerm" min="0" required><br>
+    <button onclick="calculateCombination()">Calculate Combination</button><br><br>
+    <button onclick="calculatePermutation()">Calculate Permutation</button><br><br>
+    <p id="result"></p>
+</div>
+
+<script>
+    function calculateBinomial() {
+        var n = parseInt(document.getElementById('n').value);
+        var p = parseFloat(document.getElementById('p').value);
+        var x = parseInt(document.getElementById('x').value);
+
+        var binomial = (factorial(n) / (factorial(x) * factorial(n - x))) * Math.pow(p, x) * Math.pow(1 - p, n - x);
+        document.getElementById('result').innerHTML = 'Binomial Distribution: ' + binomial.toFixed(4);
+    }
+
+    function calculatePoisson() {
+        var mu = parseFloat(document.getElementById('mu').value);
+        var x = parseInt(document.getElementById('poissonX').value);
+
+        var poisson = (Math.pow(mu, x) * Math.exp(-mu)) / factorial(x);
+        if (poisson.toFixed(4) === 'Infinity' || isNaN(poisson)) {
+            document.getElementById('result').innerHTML = 'Poisson Distribution: ' + 0.0000;
+        } else {
+            document.getElementById('result').innerHTML = 'Poisson Distribution: ' + poisson.toFixed(4);
+        }
+    }
+
+    function calculateCombination() {
+        var n = parseInt(document.getElementById('nCombPerm').value);
+        var r = parseInt(document.getElementById('rCombPerm').value);
+        
+        var combination = factorial(n) / (factorial(r) * factorial(n - r));
+        document.getElementById('result').innerHTML = 'Combination: ' + combination;
+    }
+
+    function calculatePermutation() {
+        var n = parseInt(document.getElementById('nCombPerm').value);
+        var r = parseInt(document.getElementById('rCombPerm').value);
+
+        var permutation = factorial(n) / factorial(n - r);
+        document.getElementById('result').innerHTML = 'Permutation: ' + permutation;
+    }
+
+    function factorial(num) {
+        var result = 1;
+        for (var i = 2; i <= num; i++) {
+            result *= i;
+        }
+        return result;
+    }
+</script>
+</body>
+</html>
